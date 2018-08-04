@@ -27,3 +27,4 @@ const GenreSchema = new mongoose.Schema({
 
 exports.Genre = Genre;
 exports.validate = validateGenre;
+exports.genreSchema = GenreSchema;
