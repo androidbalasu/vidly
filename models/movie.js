@@ -38,13 +38,13 @@ const MovieSchema = new mongoose.Schema({
   function validateMovie(movie) {
     const schema = {
         title: Joi.string().min(3).max(50).required(),
-        numberInStock: Joi.number().min(0).reqired(),
+        numberInStock: Joi.number().min(0).required(),
         dailyRentalRate: Joi.number().min(0).required(),
         genreId: Joi.string().min(3).max(50).required()
 
     };
-    return Joi.validate(genre, schema);
+    return Joi.validate(movie, schema);
     }
 
 exports.Movie = Movie;
-exports.validate = validateGenre;
+exports.validate = validateMovie;
