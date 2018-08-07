@@ -6,6 +6,7 @@ const rentals = require('./routes/rentals');
 const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
+Joi.objectId = require('joi-objectid')(Joi);
 
 //1 Connect to the database
 //2 Create a schema for the documents.
