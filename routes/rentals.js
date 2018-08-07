@@ -40,7 +40,7 @@ router.get('/', async (req, res) => {
 
     movie.numberInStock--;
     movie.save();
-
+ 
     res.send(rental);
   });
   
