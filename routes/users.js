@@ -2,6 +2,7 @@ const express = require('express');
 const {User, validate} = require ('../models/user');
 const mongoose = require('mongoose');
 const router = express.Router();
+const _ = require('lodash');
 
 
 // router.get('/', async (req, res) => {
@@ -16,15 +17,11 @@ router.post('/', async (req, res) => {
   let user = await User.findOne({email: req.body.email});  //Find an object by its property.
   if(user) return res.status(400).send('User is already registered.');
 
-  user = new User({
-    name: req.body.name,
-    email: req.body.email,
-    password: req.body.password
-  });
+  user = new User(_.pick(req.body, ['name', 'email', 'password']));
 
   await user.save();
 
-  res.send(user);
+  res.send(_.pick(user, ['_id','name', 'email']));
 });
 
 // router.put('/:id', async(req, res) => {
