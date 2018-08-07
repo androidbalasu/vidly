@@ -9,10 +9,17 @@ const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
 Joi.objectId = require('joi-objectid')(Joi);
+const config = require('config');
 
 //1 Connect to the database
 //2 Create a schema for the documents.
 //3 Create a model.
+
+if (!config.get('jwtPrivateKey')){
+        console.error('FATAL ERROR: jwtPrivateKey is not defined');
+        process.exit(1);
+}
+
 
 mongoose.connect('mongodb://localhost/vidly')
         .then(()=> console.log('Connected to vidly database...'))
