@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const router = express.Router();
 const _ = require('lodash');
 const bcrypt = require ('bcrypt');
+const auth = require('../middleware/auth');  //Here wer are doing Authorization and not authentication.
 
 router.post('/', async (req, res) => {
   const { error } = validate(req.body); 
@@ -20,6 +21,12 @@ router.post('/', async (req, res) => {
   
   const token = user.generateAuthToken();
   res.header ('x-auth-token', token).send(_.pick(user, ['_id','name', 'email']));
+});
+
+//Route to get the logged inuser.
+router.get('/me', auth, async (req, res)=>{
+  const user = await User.findById(req.user._id).select('-password');
+  res.send(user);
 });
 
 
