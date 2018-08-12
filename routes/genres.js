@@ -6,9 +6,14 @@ const {Genre, validate} = require ('../models/genre');
 
 const router = express.Router();
 
-router.get('/', async (req, res) => {
-  let genres = await Genre.find().sort('name');
+router.get('/', async (req, res, next) => {
+  try{let genres = await Genre.find().sort('name');
   res.send(genres);
+  }
+  catch(ex){
+    next(ex);
+  }
+  
 });
 
 //Post method for posting a genre.
