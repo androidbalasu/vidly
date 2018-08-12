@@ -1,20 +1,19 @@
 const auth = require('../middleware/auth');
 const admin = require('../middleware/admin');
+const asyncMiddleWare = require('../middleware/async');
 
 const express = require('express');
 const {Genre, validate} = require ('../models/genre');
 
 const router = express.Router();
 
-router.get('/', async (req, res, next) => {
-  try{let genres = await Genre.find().sort('name');
+//asyncMiddleWare returns a function: a factor function which basically returns a
+// function reference with the required signature that needs to be passed into router functions.
+
+router.get('/', asyncMiddleWare (async (req, res) => {
+  let genres = await Genre.find().sort('name');
   res.send(genres);
-  }
-  catch(ex){
-    next(ex);
-  }
-  
-});
+}));
 
 //Post method for posting a genre.
 router.post('/', auth, async (req, res) => {
