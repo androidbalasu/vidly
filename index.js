@@ -1,20 +1,14 @@
 const Joi = require('joi');
 const winston = require('winston');  //Used for logging.
 require('winston-mongodb');  //Used for logging to mongodb.
-const genres = require('./routes/genres');
-const customers = require('./routes/customers');
-const movies = require('./routes/movies');
-const rentals = require('./routes/rentals');
-const users = require('./routes/users');
-const auth = require('./routes/auth');
 const express = require('express');
 const app = express();
+require('./startup/routes')(app);
 const mongoose = require('mongoose');
 Joi.objectId = require('joi-objectid')(Joi);
 const config = require('config');
-const error = require('./middleware/error');
-require('express-async-errors');
 
+require('express-async-errors');
 
 //1 Connect to the database
 //2 Create a schema for the documents.
@@ -42,18 +36,6 @@ if (!config.get('jwtPrivateKey')){
 mongoose.connect('mongodb://localhost/vidly')
         .then(()=> console.log('Connected to vidly database...'))
         .catch(error => console.log(error.message));
-
-
-app.use(express.json());
-app.use('/api/genres', genres);
-app.use('/api/customers', customers);
-app.use('/api/movies', movies);
-app.use('/api/rentals', rentals);
-app.use('/api/users', users);
-app.use('/api/auth', auth);
-
-app.use(error);
-
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => console.log(`Listening on port ${port}...`));
