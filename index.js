@@ -1,9 +1,7 @@
 const express = require('express');
 const app = express();
+const winston   = require('winston');  //Used for logging.
 require('./startup/routes')(app);
-const Joi = require('joi');
-Joi.objectId = require('joi-objectid')(Joi);
-
 
 //1 Connect to the database
 //2 Create a schema for the documents.
@@ -11,9 +9,7 @@ Joi.objectId = require('joi-objectid')(Joi);
 require('./startup/logging')();
 require('./startup/db')();
 require('./startup/config')();
-
-const p = Promise.reject(new Error('Something failed miserably!'));
-p.then(()=> console.log('Done'));
+require('./startup/validation')();
 
 const port = process.env.PORT || 3000;
-app.listen(port, () => console.log(`Listening on port ${port}...`));
+app.listen(port, () => winston.info(`Listening on port ${port}...`));
