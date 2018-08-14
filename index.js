@@ -23,6 +23,13 @@ require('express-async-errors');
 winston.add(winston.transports.File, {filename: 'logfile.log'});
 winston.add(winston.transports.MongoDB, {db: 'mongodb://localhost/vidly'});
 
+process.on('uncaughtException', (exception)=>{
+        console.log('We got an uncaughtexception');
+        winston.error(exception.message, exception);
+});
+
+throw new Error('Something failed during startup');
+
 if (!config.get('jwtPrivateKey')){
         console.error('FATAL ERROR: jwtPrivateKey is not defined');
         process.exit(1);
