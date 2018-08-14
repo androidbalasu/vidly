@@ -10,7 +10,8 @@ const router = express.Router();
 //asyncMiddleWare returns a function: a factor function which basically returns a
 // function reference with the required signature that needs to be passed into router functions.
 
-router.get('/', asyncMiddleWare (async (req, res) => {
+router.get('/', asyncMiddleWare(async (req, res) => {
+  throw new Error('Could not get the genres');
   let genres = await Genre.find().sort('name');
   res.send(genres);
 }));

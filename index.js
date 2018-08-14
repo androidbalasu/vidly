@@ -1,4 +1,5 @@
 const Joi = require('joi');
+const winston = require('winston');  //Used for logging.
 const genres = require('./routes/genres');
 const customers = require('./routes/customers');
 const movies = require('./routes/movies');
@@ -11,16 +12,19 @@ const mongoose = require('mongoose');
 Joi.objectId = require('joi-objectid')(Joi);
 const config = require('config');
 const error = require('./middleware/error');
+require('express-async-errors');
+
 
 //1 Connect to the database
 //2 Create a schema for the documents.
 //3 Create a model.
 
+winston.add(winston.transports.File, {filename: 'logfile.log'});
+
 if (!config.get('jwtPrivateKey')){
         console.error('FATAL ERROR: jwtPrivateKey is not defined');
         process.exit(1);
 }
-
 
 mongoose.connect('mongodb://localhost/vidly')
         .then(()=> console.log('Connected to vidly database...'))
