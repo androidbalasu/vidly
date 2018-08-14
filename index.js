@@ -23,18 +23,12 @@ require('express-async-errors');
 winston.add(winston.transports.File, {filename: 'logfile.log'});
 winston.add(winston.transports.MongoDB, {db: 'mongodb://localhost/vidly'});
 
-process.on('uncaughtException', (exception)=>{
-        winston.error(exception.message, exception);
-        process.exit(1);
-});
-
 //throw new Error('Something failed during startup');
 winston.handleExceptions(
         new winston.transports.File({filename: 'uncaughtexceptions.log'}))
 
 process.on('unhandledRejection', (exception)=>{
-        winston.error(exception.message, exception);
-        process.exit(1);
+        throw exception;
 });
 
 const p = Promise.reject(new Error('Something failed miserably!'));
