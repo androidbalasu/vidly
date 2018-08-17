@@ -8,7 +8,8 @@ module.exports = function (){
 
     //throw new Error('Something failed during startup');
     winston.handleExceptions(
-            new winston.transports.File({filename: 'uncaughtexceptions.log'}))
+            new winston.transports.Console({colorize: true, 'prettyPrint': true}),
+            new winston.transports.File({filename: 'uncaughtexceptions.log'}));
 
     process.on('unhandledRejection', (exception)=>{
             throw exception;
